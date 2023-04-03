@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ictu.credit;
+
+option go_package = "ictu/x/credit/types";
+
+message Resume {
+  uint64 creditedTotal = 1; 
+  uint64 returnedTotal = 2; 
+  int32 balanceTotal = 3; 
+  uint64 creditedCurrent = 4; 
+  uint64 returnedCurrent = 5; 
+  int32 balanceCurrent = 6; 
+  
+}

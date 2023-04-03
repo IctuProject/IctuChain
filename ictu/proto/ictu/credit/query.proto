@@ -1,26 +1,73 @@
 syntax = "proto3";
+
 package ictu.credit;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ictu/credit/params.proto";
+import "ictu/credit/balance.proto";
+import "ictu/credit/resume.proto";
 
 option go_package = "ictu/x/credit/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/ictu/credit/params";
+  
+  }
+  
+  // Queries a list of Balance items.
+  rpc Balance    (QueryGetBalanceRequest) returns (QueryGetBalanceResponse) {
+    option (google.api.http).get = "/ictu/credit/balance/{uid}/{idContract}/{requester}";
+  
+  }
+  rpc BalanceAll (QueryAllBalanceRequest) returns (QueryAllBalanceResponse) {
+    option (google.api.http).get = "/ictu/credit/balance";
+  
+  }
+  
+  // Queries a Resume by index.
+  rpc Resume (QueryGetResumeRequest) returns (QueryGetResumeResponse) {
+    option (google.api.http).get = "/ictu/credit/resume";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetBalanceRequest {
+  string uid        = 1;
+  string idContract = 2;
+  string requester  = 3;
+}
+
+message QueryGetBalanceResponse {
+  Balance balance = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBalanceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBalanceResponse {
+  repeated Balance                                balance    = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetResumeRequest {}
+
+message QueryGetResumeResponse {
+  Resume Resume = 1 [(gogoproto.nullable) = false];
+}
+

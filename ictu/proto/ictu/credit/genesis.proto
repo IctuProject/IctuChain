@@ -1,12 +1,18 @@
 syntax = "proto3";
+
 package ictu.credit;
 
 import "gogoproto/gogo.proto";
 import "ictu/credit/params.proto";
+import "ictu/credit/balance.proto";
+import "ictu/credit/resume.proto";
 
 option go_package = "ictu/x/credit/types";
 
 // GenesisState defines the credit module's genesis state.
 message GenesisState {
-  Params params = 1 [(gogoproto.nullable) = false];
+           Params  params      = 1 [(gogoproto.nullable) = false];
+  repeated Balance balanceList = 2 [(gogoproto.nullable) = false];
+           Resume  resume      = 3;
 }
+

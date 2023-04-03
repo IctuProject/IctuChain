@@ -14,6 +14,26 @@ func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
 
+		BalanceList: []types.Balance{
+			{
+				Uid:        "0",
+				IdContract: "0",
+				Requester:  "0",
+			},
+			{
+				Uid:        "1",
+				IdContract: "1",
+				Requester:  "1",
+			},
+		},
+		Resume: &types.Resume{
+			CreditedTotal:   51,
+			ReturnedTotal:   81,
+			BalanceTotal:    6,
+			CreditedCurrent: 49,
+			ReturnedCurrent: 68,
+			BalanceCurrent:  68,
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -25,5 +45,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
 
+	require.ElementsMatch(t, genesisState.BalanceList, got.BalanceList)
+	require.Equal(t, genesisState.Resume, got.Resume)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
