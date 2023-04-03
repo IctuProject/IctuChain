@@ -10,3 +10,7 @@ import (
 var (
 	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
 )
+
+var (
+	PanicResumeCantBeFound = "ERROR: Resume can't be found"
+)

@@ -11,7 +11,14 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		BalanceList: []Balance{},
-		Resume:      nil,
+		Resume: &Resume{
+			CreditedTotal:   0,
+			ReturnedTotal:   0,
+			BalanceTotal:    0,
+			ReturnedCurrent: 0,
+			BalanceCurrent:  0,
+			CreditedCurrent: 0,
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

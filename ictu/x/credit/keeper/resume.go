@@ -1,10 +1,33 @@
 package keeper
 
 import (
+	"ictu/x/credit/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"ictu/x/credit/types"
 )
+
+func (k Keeper) UpdateResumeNewBalance(ctx sdk.Context, balance types.Balance) {
+	resume, found := k.GetResume(ctx)
+	if !found {
+		panic(types.PanicResumeCantBeFound)
+	}
+	resume.CreditedTotal += balance.Credited
+	resume.CreditedCurrent += balance.Credited
+	resume.UpdateBalances()
+	k.SetResume(ctx, resume)
+}
+
+func (k Keeper) UpdateResumeRemoveBalance(ctx sdk.Context, balance types.Balance) {
+	resume, found := k.GetResume(ctx)
+	if !found {
+		panic(types.PanicResumeCantBeFound)
+	}
+	resume.CreditedCurrent -= balance.Credited
+	resume.ReturnedCurrent -= balance.Returned
+	resume.UpdateBalances()
+	k.SetResume(ctx, resume)
+}
 
 // SetResume set resume in the store
 func (k Keeper) SetResume(ctx sdk.Context, resume types.Resume) {

@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"ictu/x/credit/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"ictu/x/credit/types"
 )
 
 // SetBalance set a specific balance in the store from its index
@@ -15,6 +16,7 @@ func (k Keeper) SetBalance(ctx sdk.Context, balance types.Balance) {
 		balance.IdContract,
 		balance.Requester,
 	), b)
+	k.UpdateResumeNewBalance(ctx, balance)
 }
 
 // GetBalance returns a balance from its index
@@ -49,11 +51,15 @@ func (k Keeper) RemoveBalance(
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BalanceKeyPrefix))
+	balance, _ := k.GetBalance(ctx, uid, idContract, requester)
+	// Expected that store.Delete throws error if balance can't be found,
+	// so that update resume doesnt trigger
 	store.Delete(types.BalanceKey(
 		uid,
 		idContract,
 		requester,
 	))
+	k.UpdateResumeRemoveBalance(ctx, balance)
 }
 
 // GetAllBalance returns all balance
