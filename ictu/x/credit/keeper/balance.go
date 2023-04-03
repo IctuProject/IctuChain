@@ -16,7 +16,7 @@ func (k Keeper) SetBalance(ctx sdk.Context, balance types.Balance) {
 		balance.IdContract,
 		balance.Requester,
 	), b)
-	//k.UpdateResumeNewBalance(ctx, balance)
+	k.UpdateResumeUpdateBalance(ctx, balance)
 }
 
 func (k Keeper) NewBalance(ctx sdk.Context, balance types.Balance) {

@@ -18,6 +18,18 @@ func (k Keeper) UpdateResumeNewBalance(ctx sdk.Context, balance types.Balance) {
 	k.SetResume(ctx, resume)
 }
 
+// incorrect implementation with the returns
+func (k Keeper) UpdateResumeUpdateBalance(ctx sdk.Context, balance types.Balance) {
+	resume, found := k.GetResume(ctx)
+	if !found {
+		panic(types.PanicResumeCantBeFound)
+	}
+	resume.ReturnedTotal += balance.Returned
+	resume.ReturnedCurrent += balance.Returned
+	resume.UpdateBalances()
+	k.SetResume(ctx, resume)
+}
+
 func (k Keeper) UpdateResumeRemoveBalance(ctx sdk.Context, balance types.Balance) {
 	resume, found := k.GetResume(ctx)
 	if !found {
