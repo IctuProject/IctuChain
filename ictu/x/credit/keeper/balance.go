@@ -16,6 +16,17 @@ func (k Keeper) SetBalance(ctx sdk.Context, balance types.Balance) {
 		balance.IdContract,
 		balance.Requester,
 	), b)
+	//k.UpdateResumeNewBalance(ctx, balance)
+}
+
+func (k Keeper) NewBalance(ctx sdk.Context, balance types.Balance) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.BalanceKeyPrefix))
+	b := k.cdc.MustMarshal(&balance)
+	store.Set(types.BalanceKey(
+		balance.Uid,
+		balance.IdContract,
+		balance.Requester,
+	), b)
 	k.UpdateResumeNewBalance(ctx, balance)
 }
 
