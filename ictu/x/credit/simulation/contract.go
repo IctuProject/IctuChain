@@ -4,13 +4,14 @@ import (
 	"math/rand"
 	"strconv"
 
+	"ictu/x/credit/keeper"
+	"ictu/x/credit/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"ictu/x/credit/keeper"
-	"ictu/x/credit/types"
 )
 
 // Prevent strconv unused error
@@ -28,12 +29,11 @@ func SimulateMsgCreateContract(
 		i := r.Int()
 		msg := &types.MsgCreateContract{
 			Creator: simAccount.Address.String(),
-			Uid:     strconv.Itoa(i),
 			Req:     strconv.Itoa(i),
 			Prov:    strconv.Itoa(i),
 		}
 
-		_, found := k.GetContract(ctx, msg.Uid, msg.Req, msg.Prov)
+		_, found := k.GetContract(ctx, "", msg.Req, msg.Prov)
 		if found {
 			return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "Contract already exist"), nil, nil
 		}

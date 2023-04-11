@@ -13,32 +13,36 @@ import (
 func CmdCreateContract() *cobra.Command {
 	cmd := &cobra.Command{
 		//Use:   "create-contract [uid] [req] [prov] [amount] [desc] [util-life] [req-signature] [prov-signature] [is-extension] [time-created] [time-req-accepted] [time-prov-accepted]",
-		Use:   "create-contract [uid] [req] [prov] [amount] [desc] [util-life] [req-signature] [prov-signature]",
+		Use:   "create-contract [req] [prov] [amount] [desc] [util-life]",
 		Short: "Create a new contract",
 		Args:  cobra.ExactArgs(12),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
-			indexUid := args[0]
-			indexReq := args[1]
-			indexProv := args[2]
+			//indexUid := args[0]
+			indexReq := args[0]
+			indexProv := args[1]
 
 			// Get value arguments
-			argAmount, err := cast.ToUint64E(args[3])
+			argAmount, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
-			argDesc := args[4]
-			argUtilLife := args[5]
-			argReqSignature := args[6]
-			argProvSignature := args[7]
-			argIsExtension, err := cast.ToBoolE(args[8])
+			argDesc := args[3]
+			argUtilLife, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
 			}
-			argTimeCreated := args[9]
-			argTimeReqAccepted := args[10]
-			argTimeProvAccepted := args[11]
-
+			/*
+				argReqSignature := args[6]
+				argProvSignature := args[7]
+				argIsExtension, err := cast.ToBoolE(args[8])
+				if err != nil {
+					return err
+				}
+				argTimeCreated := args[9]
+				argTimeReqAccepted := args[10]
+				argTimeProvAccepted := args[11]
+			*/
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
@@ -46,18 +50,11 @@ func CmdCreateContract() *cobra.Command {
 
 			msg := types.NewMsgCreateContract(
 				clientCtx.GetFromAddress().String(),
-				indexUid,
 				indexReq,
 				indexProv,
 				argAmount,
 				argDesc,
 				argUtilLife,
-				argReqSignature,
-				argProvSignature,
-				argIsExtension,
-				argTimeCreated,
-				argTimeReqAccepted,
-				argTimeProvAccepted,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
@@ -88,7 +85,10 @@ func CmdUpdateContract() *cobra.Command {
 				return err
 			}
 			argDesc := args[4]
-			argUtilLife := args[5]
+			argUtilLife, err := cast.ToUint64E(args[5])
+			if err != nil {
+				return err
+			}
 			argReqSignature := args[6]
 			argProvSignature := args[7]
 			argIsExtension, err := cast.ToBoolE(args[8])

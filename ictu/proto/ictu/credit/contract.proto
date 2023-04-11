@@ -9,7 +9,7 @@ message Contract {
   string prov = 3; 
   uint64 amount = 4; 
   string desc = 5; 
-  string utilLife = 6; 
+  uint64 utilLife = 6;
   string reqSignature = 7; 
   string provSignature = 8; 
   bool isExtension = 9; 

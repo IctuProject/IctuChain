@@ -15,34 +15,20 @@ var _ sdk.Msg = &MsgCreateContract{}
 
 func NewMsgCreateContract(
 	creator string,
-	uid string,
 	req string,
 	prov string,
 	amount uint64,
 	desc string,
-	utilLife string,
-	reqSignature string,
-	provSignature string,
-	isExtension bool,
-	timeCreated string,
-	timeReqAccepted string,
-	timeProvAccepted string,
+	utilLife uint64,
 
 ) *MsgCreateContract {
 	return &MsgCreateContract{
-		Creator:          creator,
-		Uid:              uid,
-		Req:              req,
-		Prov:             prov,
-		Amount:           amount,
-		Desc:             desc,
-		UtilLife:         utilLife,
-		ReqSignature:     reqSignature,
-		ProvSignature:    provSignature,
-		IsExtension:      isExtension,
-		TimeCreated:      timeCreated,
-		TimeReqAccepted:  timeReqAccepted,
-		TimeProvAccepted: timeProvAccepted,
+		Creator:  creator,
+		Req:      req,
+		Prov:     prov,
+		Amount:   amount,
+		Desc:     desc,
+		UtilLife: utilLife,
 	}
 }
 
@@ -84,7 +70,7 @@ func NewMsgUpdateContract(
 	prov string,
 	amount uint64,
 	desc string,
-	utilLife string,
+	utilLife uint64,
 	reqSignature string,
 	provSignature string,
 	isExtension bool,

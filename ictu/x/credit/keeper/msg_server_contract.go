@@ -2,19 +2,25 @@ package keeper
 
 import (
 	"context"
+	"time"
+
+	"ictu/x/credit/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"ictu/x/credit/types"
+	"github.com/google/uuid"
 )
 
 func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateContract) (*types.MsgCreateContractResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// Generate uuid for new contract
+	uuid := uuid.New().String()
+
 	// Check if the value already exists
 	_, isFound := k.GetContract(
 		ctx,
-		msg.Uid,
+		uuid,
 		msg.Req,
 		msg.Prov,
 	)
@@ -24,18 +30,18 @@ func (k msgServer) CreateContract(goCtx context.Context, msg *types.MsgCreateCon
 
 	var contract = types.Contract{
 		Creator:          msg.Creator,
-		Uid:              msg.Uid,
+		Uid:              uuid,
 		Req:              msg.Req,
 		Prov:             msg.Prov,
 		Amount:           msg.Amount,
 		Desc:             msg.Desc,
 		UtilLife:         msg.UtilLife,
-		ReqSignature:     msg.ReqSignature,
-		ProvSignature:    msg.ProvSignature,
-		IsExtension:      msg.IsExtension,
-		TimeCreated:      msg.TimeCreated,
-		TimeReqAccepted:  msg.TimeReqAccepted,
-		TimeProvAccepted: msg.TimeProvAccepted,
+		ReqSignature:     msg.Req,
+		ProvSignature:    msg.Prov,
+		IsExtension:      false,
+		TimeCreated:      time.Now().String(),
+		TimeReqAccepted:  "",
+		TimeProvAccepted: "",
 	}
 
 	k.SetContract(

@@ -12,6 +12,17 @@ service Msg {
   rpc UpdateContract (MsgUpdateContract) returns (MsgUpdateContractResponse);
   rpc DeleteContract (MsgDeleteContract) returns (MsgDeleteContractResponse);
 }
+
+message MsgCreateContract {
+  string creator          =  1;
+  string req              =  2;
+  string prov             =  3;
+  uint64 amount           =  4;
+  string desc             =  5;
+  uint64 utilLife         =  6;
+}
+
+/*
 message MsgCreateContract {
   string creator          =  1;
   string uid              =  2;
@@ -19,7 +30,7 @@ message MsgCreateContract {
   string prov             =  4;
   uint64 amount           =  5;
   string desc             =  6;
-  string utilLife         =  7;
+  uint64 utilLife         =  7;
   string reqSignature     =  8;
   string provSignature    =  9;
   bool   isExtension      = 10;
@@ -27,6 +38,8 @@ message MsgCreateContract {
   string timeReqAccepted  = 12;
   string timeProvAccepted = 13;
 }
+
+*/
 
 message MsgCreateContractResponse {}
 
@@ -37,7 +50,7 @@ message MsgUpdateContract {
   string prov             =  4;
   uint64 amount           =  5;
   string desc             =  6;
-  string utilLife         =  7;
+  uint64 utilLife         =  7;
   string reqSignature     =  8;
   string provSignature    =  9;
   bool   isExtension      = 10;
@@ -56,4 +69,3 @@ message MsgDeleteContract {
 }
 
 message MsgDeleteContractResponse {}
-

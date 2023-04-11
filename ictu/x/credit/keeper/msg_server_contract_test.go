@@ -23,14 +23,13 @@ func TestContractMsgServerCreate(t *testing.T) {
 	creator := "A"
 	for i := 0; i < 5; i++ {
 		expected := &types.MsgCreateContract{Creator: creator,
-			Uid:  strconv.Itoa(i),
 			Req:  strconv.Itoa(i),
 			Prov: strconv.Itoa(i),
 		}
 		_, err := srv.CreateContract(wctx, expected)
 		require.NoError(t, err)
 		rst, found := k.GetContract(ctx,
-			expected.Uid,
+			"",
 			expected.Req,
 			expected.Prov,
 		)
@@ -79,7 +78,6 @@ func TestContractMsgServerUpdate(t *testing.T) {
 			srv := keeper.NewMsgServerImpl(*k)
 			wctx := sdk.WrapSDKContext(ctx)
 			expected := &types.MsgCreateContract{Creator: creator,
-				Uid:  strconv.Itoa(0),
 				Req:  strconv.Itoa(0),
 				Prov: strconv.Itoa(0),
 			}
@@ -92,7 +90,7 @@ func TestContractMsgServerUpdate(t *testing.T) {
 			} else {
 				require.NoError(t, err)
 				rst, found := k.GetContract(ctx,
-					expected.Uid,
+					"",
 					expected.Req,
 					expected.Prov,
 				)
@@ -144,7 +142,6 @@ func TestContractMsgServerDelete(t *testing.T) {
 			wctx := sdk.WrapSDKContext(ctx)
 
 			_, err := srv.CreateContract(wctx, &types.MsgCreateContract{Creator: creator,
-				Uid:  strconv.Itoa(0),
 				Req:  strconv.Itoa(0),
 				Prov: strconv.Itoa(0),
 			})
