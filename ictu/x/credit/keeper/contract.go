@@ -1,9 +1,12 @@
 package keeper
 
 import (
+	"ictu/x/credit/types"
+	"time"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"ictu/x/credit/types"
+	"github.com/google/uuid"
 )
 
 // SetContract set a specific contract in the store from its index
@@ -15,6 +18,17 @@ func (k Keeper) SetContract(ctx sdk.Context, contract types.Contract) {
 		contract.Req,
 		contract.Prov,
 	), b)
+
+	nowPlusUtilLife := time.Now().Add(time.Duration(contract.UtilLife) * time.Hour)
+	k.NewBalance(ctx, types.Balance{
+		Uid:               uuid.NewString(),
+		IdContract:        contract.Uid,
+		Requester:         contract.Req,
+		Credited:          contract.Amount,
+		Returned:          0,
+		ReturnPeriodicity: "h",
+		ExpirationDate:    nowPlusUtilLife.String(),
+	})
 }
 
 // GetContract returns a contract from its index

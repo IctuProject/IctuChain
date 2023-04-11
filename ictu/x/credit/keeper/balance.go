@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"ictu/x/credit/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -28,6 +29,19 @@ func (k Keeper) NewBalance(ctx sdk.Context, balance types.Balance) {
 		balance.Requester,
 	), b)
 	k.UpdateResumeNewBalance(ctx, balance)
+
+	coins := sdk.Coins{
+		sdk.Coin{
+			Denom:  types.ModuleDenom,
+			Amount: sdk.NewInt(int64(balance.Credited)),
+		},
+	}
+	k.bankKeeper.MintCoins(ctx, types.ModuleName, coins)
+	requesterAddr, err := sdk.AccAddressFromBech32(balance.Requester)
+	if err != nil {
+		panic(fmt.Sprintf("Address %s is not parseable to a chain address!", balance.Requester))
+	}
+	k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, requesterAddr, coins)
 }
 
 // GetBalance returns a balance from its index

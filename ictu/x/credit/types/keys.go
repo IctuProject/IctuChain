@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_credit"
+
+	// The default denomination of the module
+	ModuleDenom = "credits"
 )
 
 func KeyPrefix(p string) []byte {

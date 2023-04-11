@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -106,6 +107,7 @@ import (
 	creditmodule "ictu/x/credit"
 	creditmodulekeeper "ictu/x/credit/keeper"
 	creditmoduletypes "ictu/x/credit/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "ictu/app/params"
@@ -502,7 +504,8 @@ func New(
 		keys[creditmoduletypes.MemStoreKey],
 		app.GetSubspace(creditmoduletypes.ModuleName),
 
-		app.BankKeeper,
+		// this module can only mint the denom "credits"
+		app.BankKeeper.WithMintCoinsRestriction(CreditsMintingRestriction),
 	)
 	creditModule := creditmodule.NewAppModule(appCodec, app.CreditKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -729,6 +732,15 @@ func New(
 	// this line is used by starport scaffolding # stargate/app/beforeInitReturn
 
 	return app
+}
+
+func CreditsMintingRestriction(ctx sdk.Context, coins sdk.Coins) error {
+	for _, coin := range coins {
+		if coin.Denom != creditmoduletypes.ModuleDenom {
+			return errors.New(fmt.Sprintf("Credit module can only mint %s, tried minting %s", creditmoduletypes.ModuleDenom, coin.Denom))
+		}
+	}
+	return nil
 }
 
 // Name returns the name of the App

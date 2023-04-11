@@ -15,7 +15,7 @@ func CmdCreateContract() *cobra.Command {
 		//Use:   "create-contract [uid] [req] [prov] [amount] [desc] [util-life] [req-signature] [prov-signature] [is-extension] [time-created] [time-req-accepted] [time-prov-accepted]",
 		Use:   "create-contract [req] [prov] [amount] [desc] [util-life]",
 		Short: "Create a new contract",
-		Args:  cobra.ExactArgs(12),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			//indexUid := args[0]
