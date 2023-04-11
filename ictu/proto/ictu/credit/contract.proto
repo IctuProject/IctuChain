@@ -1,0 +1,21 @@
+syntax = "proto3";
+package ictu.credit;
+
+option go_package = "ictu/x/credit/types";
+
+message Contract {
+  string uid = 1; 
+  string req = 2; 
+  string prov = 3; 
+  uint64 amount = 4; 
+  string desc = 5; 
+  string utilLife = 6; 
+  string reqSignature = 7; 
+  string provSignature = 8; 
+  bool isExtension = 9; 
+  string timeCreated = 10; 
+  string timeReqAccepted = 11; 
+  string timeProvAccepted = 12; 
+  string creator = 13;
+}
+

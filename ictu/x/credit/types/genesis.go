@@ -19,6 +19,7 @@ func DefaultGenesis() *GenesisState {
 			BalanceCurrent:  0,
 			CreditedCurrent: 0,
 		},
+		ContractList: []Contract{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -36,6 +37,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for balance")
 		}
 		balanceIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in contract
+	contractIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ContractList {
+		index := string(ContractKey(elem.Uid, elem.Req, elem.Prov))
+		if _, ok := contractIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for contract")
+		}
+		contractIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

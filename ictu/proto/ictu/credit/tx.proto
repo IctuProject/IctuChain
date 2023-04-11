@@ -1,7 +1,59 @@
 syntax = "proto3";
+
 package ictu.credit;
+
+import "ictu/credit/contract.proto";
 
 option go_package = "ictu/x/credit/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreateContract (MsgCreateContract) returns (MsgCreateContractResponse);
+  rpc UpdateContract (MsgUpdateContract) returns (MsgUpdateContractResponse);
+  rpc DeleteContract (MsgDeleteContract) returns (MsgDeleteContractResponse);
+}
+message MsgCreateContract {
+  string creator          =  1;
+  string uid              =  2;
+  string req              =  3;
+  string prov             =  4;
+  uint64 amount           =  5;
+  string desc             =  6;
+  string utilLife         =  7;
+  string reqSignature     =  8;
+  string provSignature    =  9;
+  bool   isExtension      = 10;
+  string timeCreated      = 11;
+  string timeReqAccepted  = 12;
+  string timeProvAccepted = 13;
+}
+
+message MsgCreateContractResponse {}
+
+message MsgUpdateContract {
+  string creator          =  1;
+  string uid              =  2;
+  string req              =  3;
+  string prov             =  4;
+  uint64 amount           =  5;
+  string desc             =  6;
+  string utilLife         =  7;
+  string reqSignature     =  8;
+  string provSignature    =  9;
+  bool   isExtension      = 10;
+  string timeCreated      = 11;
+  string timeReqAccepted  = 12;
+  string timeProvAccepted = 13;
+}
+
+message MsgUpdateContractResponse {}
+
+message MsgDeleteContract {
+  string creator = 1;
+  string uid     = 2;
+  string req     = 3;
+  string prov    = 4;
+}
+
+message MsgDeleteContractResponse {}
+

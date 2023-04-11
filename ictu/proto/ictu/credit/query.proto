@@ -8,6 +8,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "ictu/credit/params.proto";
 import "ictu/credit/balance.proto";
 import "ictu/credit/resume.proto";
+import "ictu/credit/contract.proto";
 
 option go_package = "ictu/x/credit/types";
 
@@ -33,6 +34,16 @@ service Query {
   // Queries a Resume by index.
   rpc Resume (QueryGetResumeRequest) returns (QueryGetResumeResponse) {
     option (google.api.http).get = "/ictu/credit/resume";
+  
+  }
+  
+  // Queries a list of Contract items.
+  rpc Contract    (QueryGetContractRequest) returns (QueryGetContractResponse) {
+    option (google.api.http).get = "/ictu/credit/contract/{uid}/{req}/{prov}";
+  
+  }
+  rpc ContractAll (QueryAllContractRequest) returns (QueryAllContractResponse) {
+    option (google.api.http).get = "/ictu/credit/contract";
   
   }
 }
@@ -69,5 +80,24 @@ message QueryGetResumeRequest {}
 
 message QueryGetResumeResponse {
   Resume Resume = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetContractRequest {
+  string uid  = 1;
+  string req  = 2;
+  string prov = 3;
+}
+
+message QueryGetContractResponse {
+  Contract contract = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllContractRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllContractResponse {
+  repeated Contract                               contract   = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

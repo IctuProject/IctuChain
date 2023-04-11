@@ -34,6 +34,18 @@ func TestGenesis(t *testing.T) {
 			ReturnedCurrent: 68,
 			BalanceCurrent:  68,
 		},
+		ContractList: []types.Contract{
+			{
+				Uid:  "0",
+				Req:  "0",
+				Prov: "0",
+			},
+			{
+				Uid:  "1",
+				Req:  "1",
+				Prov: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -47,5 +59,6 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.BalanceList, got.BalanceList)
 	require.Equal(t, genesisState.Resume, got.Resume)
+	require.ElementsMatch(t, genesisState.ContractList, got.ContractList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
