@@ -1,2 +1,1 @@
-# IctuChain
-The code of the ictu chain that needs to run in the nodes of the network (try push)
+This is a blockchain that i'm currently building as my side project.
